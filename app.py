@@ -54,7 +54,7 @@ def upload():
         #params = urllib.parse.urlencode(data)
         url="https://webfolio-hackathon.herokuapp.com/fetch_data/"+user_id
         requests.post(url, data = data)
-        return "ok"
+        return redirect("https://webfolio-hackathon.herokuapp.com/show")
         #return render_template('text.html', data=data) #res_to_dict(file.filename)
 
 def res_to_dict(filename):

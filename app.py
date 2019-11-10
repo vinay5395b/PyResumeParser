@@ -52,7 +52,7 @@ def upload():
         data = res_to_dict(file.filename)
         data["user_id"] = user_id
         #params = urllib.parse.urlencode(data)
-        url="https://webfolio-hackathon.herokuapp.com/vinays_data/"+user_id
+        url="https://webfolio-hackathon.herokuapp.com/fetch_data/"+user_id
         requests.post(url, data = data)
         return "ok"
         #return render_template('text.html', data=data) #res_to_dict(file.filename)

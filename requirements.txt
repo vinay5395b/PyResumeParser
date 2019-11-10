@@ -5,3 +5,4 @@ pdfminer.six==20181108
 jsonify==0.5
 pdfminer==20191103
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz#egg=en_core_web_sm
+gunicorn==19.0.0

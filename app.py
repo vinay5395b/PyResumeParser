@@ -55,7 +55,7 @@ def res_to_dict(filename):
         resource_manager = PDFResourceManager()
         fake_file_handle = io.StringIO()
         converter = TextConverter(resource_manager, fake_file_handle)
-        print(converter)
+        #print(converter)
         page_interpreter = PDFPageInterpreter(resource_manager, converter)
      
         fh = open(pdf_path, 'rb')
@@ -192,4 +192,5 @@ def res_to_dict(filename):
 
 
 if __name__ == '__main__':
-    app.run(port=33507,debug=False)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(port=port,debug=False)

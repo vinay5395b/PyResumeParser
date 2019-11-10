@@ -5,11 +5,13 @@ Created on Sun Nov 10 04:14:43 2019
 @author: Dominic
 """
 
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, send_file, redirect
 from io import BytesIO
 import jsonify
 import traceback
 import os
+import json
+import requests
 #import pandas as pd
 #from pandas import datetime
 #import xlrd
@@ -17,7 +19,7 @@ import os
 
 #######################
 import io
- 
+import urllib 
 from pdfminer.converter import TextConverter
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
@@ -36,17 +38,24 @@ nlp = spacy.load('en_core_web_sm')
 app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/<user_id>')
+def index(user_id):
+   # return user_id
+   return render_template('index.html', user_id=user_id)
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
     if request.method == 'POST':
+        user_id = request.form["user_id"]
         file = request.files['inputFile']
         file.save(file.filename)
-        return res_to_dict(file.filename)
-
+        data = res_to_dict(file.filename)
+        data["user_id"] = user_id
+        #params = urllib.parse.urlencode(data)
+        url="https://webfolio-hackathon.herokuapp.com/vinays_data/"+user_id
+        requests.post(url, data = data)
+        return "ok"
+        #return render_template('text.html', data=data) #res_to_dict(file.filename)
 
 def res_to_dict(filename):
 
@@ -142,6 +151,8 @@ def res_to_dict(filename):
     extractor = URLExtract()
     urls = extractor.find_urls(resume_text)
     
+    linkedin = ""
+    github = ""
     
     for i in urls:
         if not i.find('linkedin'):
@@ -167,7 +178,7 @@ def res_to_dict(filename):
     
     ############################## 
     
-    exp2 = '(?<=PROJECTS)(?s)(.*$)'
+    exp2 = '(?<=(PROJECTS|Projects))(?s)(.*$)'
     text2 = re.search(exp2, resume_text)
     text2 = text2.group()
     
